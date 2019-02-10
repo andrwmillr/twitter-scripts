@@ -1,18 +1,22 @@
-### Authenticate with Twitter
-
+import os
+import sys
 import tweepy
 import requests
-from secrets import sender_password, twitter_auth, screen_names
 
-auth = tweepy.OAuthHandler(twitter_auth["consumer_key"],
-                           twitter_auth["consumer_secret"])
-auth.set_access_token(twitter_auth["access_token"],
-                      twitter_auth["access_secret"])
+
+### Authenticate with Twitter
+
+auth = tweepy.OAuthHandler(os.environ["consumer_key"],
+                           os.environ["consumer_secret"])
+auth.set_access_token(os.environ["access_token"],
+                      os.environ["access_secret"])
 
 api = tweepy.API(auth)
 
 
 ### Get tweets
+
+screen_names = sys.argv[1:len(sys.argv)] # screen names are entered as arguments
 
 likes = []
 
@@ -88,10 +92,10 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 sender = 'my.twitter.scripts@gmail.com'
-password = sender_password
+password = os.environ["sender_password"]
 
 recipient = 'admiller9@gmail.com'
-subject = 'Your recently liked Tweets'
+subject = 'Your requested Tweets'
 
 msg = MIMEMultipart('alternative')
 msg.attach(MIMEText(body, 'plain')) # plain-text
